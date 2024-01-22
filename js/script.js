@@ -10,7 +10,7 @@ const randomX = Math.floor(Math.random() * boardWidth / squareSize);
 const randomY = Math.floor(Math.random() * boardHeight / squareSize);
 
 const food = new Food(randomX, randomY, changeCellColor);
-const snake = new Snake();
+const snake = new Snake(changeCellColor);
 const score = new Score();
 
 function changeCellColor(x, y, color) {
@@ -38,5 +38,31 @@ function createBoard() {
     }
 }
 
+document.addEventListener("keydown", function (event) {
+    changeDirection(event.keyCode);
+});
+
+function changeDirection(keyCode) {
+
+    if (keyCode === 37 && direction !== "right") {
+    direction = "left";
+    } else if (keyCode === 38 && direction !== "down") {
+    direction = "up";
+    } else if (keyCode === 39 && direction !== "left") {
+    direction = "right";
+    } else if (keyCode === 40 && direction !== "up") {
+    direction = "down";
+    }
+}
+
 createBoard();
 food.draw();
+snake.startPosition();
+setInterval(snake.move, 100);
+
+if (snakeHead.x === food.x && snakeHead.y === food.y) {
+    food.draw();
+    score += 1;
+} else {
+    snake.pop();
+}
