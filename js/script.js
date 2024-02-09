@@ -1,68 +1,41 @@
-import Food from './Food.js';
-import Snake from './Snake.js';
-import Score from './Score.js';
+import Field from "./Field.js";
+import Food from "./Food.js";
+import Snake from "./Snake.js";
 
-const board = document.querySelector('.main__board');
-const boardWidth = 500;
-const boardHeight = 500;
-const squareSize = 50;
-const randomX = Math.floor(Math.random() * boardWidth / squareSize);
-const randomY = Math.floor(Math.random() * boardHeight / squareSize);
+const field = document.querySelector('.main__field');
+let direction = 'right';
 
-const food = new Food(randomX, randomY, changeCellColor);
-const snake = new Snake(changeCellColor);
-const score = new Score();
+const creator = new Field(0, 0, field);
+const food = new Food(findCell);
+const snake = new Snake(findCell, direction, food);
 
-function changeCellColor(x, y, color) {
-    const cellId = `cell-${x}-${y}`;
-    const cell = document.getElementById(cellId);
-    if (cell) {
-        cell.style.backgroundColor = color;
-    }
+creator.createField();
+
+function findCell (a, b, color) {
+    let xCoord = a;
+    let yCoord = b;
+    const thisCell = document.querySelector(`.cell[data-x="${xCoord}"][data-y="${yCoord}"]`);
+    thisCell.style.backgroundColor = `${color}`;
 }
 
-function createCell(x, y) {
-    const cell = document.createElement('div');
-    cell.className = 'cell';
-    cell.id = `cell-${x}-${y}`;
-    cell.dataset.x = x;
-    cell.dataset.y = y;
-    board.appendChild(cell);
+document.addEventListener("keydown", onMove);
+
+function onMove(event) {
+	if(event.keyCode == 37 && direction != "right")
+		direction = "left";
+	else if(event.keyCode == 38 && direction != "down")
+		direction = "up";
+	else if(event.keyCode == 39 && direction != "left")
+		direction = "right";
+	else if(event.keyCode == 40 && direction != "up")
+		direction = "down";
 }
 
-function createBoard() {
-    for (let i = 0; i < 10; i++) {
-        for (let j = 0; j < 10; j++) {
-            createCell(i, j);
-        }
-    }
-}
-
-document.addEventListener("keydown", function (event) {
-    changeDirection(event.keyCode);
-});
-
-function changeDirection(keyCode) {
-
-    if (keyCode === 37 && direction !== "right") {
-    direction = "left";
-    } else if (keyCode === 38 && direction !== "down") {
-    direction = "up";
-    } else if (keyCode === 39 && direction !== "left") {
-    direction = "right";
-    } else if (keyCode === 40 && direction !== "up") {
-    direction = "down";
-    }
-}
-
-createBoard();
-food.draw();
-snake.startPosition();
-setInterval(snake.move, 100);
-
-if (snakeHead.x === food.x && snakeHead.y === food.y) {
+if (snake.snakeUnit[0].x === food.x && snake.snakeUnit[0].y === food.y) {
     food.draw();
-    score += 1;
 } else {
-    snake.pop();
+    snake.snakeUnit.pop();
 }
+
+food.draw();
+setInterval(() => snake.move(), 1000);

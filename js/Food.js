@@ -1,14 +1,17 @@
 class Food {
-    constructor(randomX, randomY, changeCellColor) {
-this.randomX = randomX;
-this.randomY = randomY;
-this.changeCellColor = changeCellColor;
+
+    constructor(findCell) {
+        this.findCell = findCell;
     }
 
-draw() {
-    this.changeCellColor(this.randomX, this.randomY, 'red');
-}
+    draw() {
+        let fieldWidth = 10;
+        let fieldHeight = 10;
+        let randomX = Math.floor(Math.random() * fieldWidth);
+        let randomY = Math.floor(Math.random() * fieldHeight);
+        this.findCell(randomX, randomY, 'red');
+    }
 
-};
+}
 
 export default Food;

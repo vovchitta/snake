@@ -1,38 +1,29 @@
 class Snake {
-    constructor(changeCellColor) {
-        this.changeCellColor = changeCellColor;
-        this.snake = [];
-        this.direction = 'right';
-    }
-
-    draw(x, y) {
-        this.changeCellColor(x, y, 'green');
-    }
-
-    startPosition() {
-        this.changeCellColor(4, 3, 'green');
-        this.changeCellColor(4, 4, 'green'); 
-        this.snake = [
-            {x: 4, y: 3},
-            {x: 4, y: 4},
-        ]
+    constructor(findCell, direction) {
+        this.findCell = findCell;
+        this.snakeUnit = [
+            {x: 3, y: 5},
+            {x: 2, y: 5},
+        ];
+        this.direction = direction;
     }
 
     move() {
-        let snakeHead = { x: this.snake[0].x, y: this.snake[0].y };
-
+        let snakeHead = { x: this.snakeUnit[0].x , y: this.snakeUnit[0].y };
         if (this.direction === 'right') {
-            snakeHead.y++;
-        } else if (this.direction === 'left') {
-            snakeHead.y--;
-        } else if (this.direction === 'up') {
-            snakeHead.x--;
-        } else if (this.direction === 'down') {
             snakeHead.x++;
+        } else if (this.direction === 'left') {
+            snakeHead.x--;
+        } else if (this.direction === 'up') {
+            snakeHead.y--;
+        } else if (this.direction === 'down') {
+            snakeHead.y++;
         }
 
-        this.snake.unshift(snakeHead);
-    }
+        this.snakeUnit.unshift(snakeHead);
+        this.findCell(snakeHead.x, snakeHead.y, 'yellow');
+        }
+    
 }
 
 export default Snake;

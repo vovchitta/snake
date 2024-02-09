@@ -1,4 +1,4 @@
-@import url(./normalize.css);
+
 
 * {
     box-sizing: border-box;
@@ -30,7 +30,7 @@ body {
     margin-bottom: 10px;
 }
 
-.main__board {
+.main__field {
     display: grid;
     grid-template-columns: repeat(10, 50px);
     grid-template-rows: repeat(10, 50px);
