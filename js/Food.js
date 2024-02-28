@@ -2,14 +2,15 @@ class Food {
 
     constructor(findCell) {
         this.findCell = findCell;
+        this.foodUnit = {x: '', y: ''};
     }
 
     draw() {
         let fieldWidth = 10;
         let fieldHeight = 10;
-        let randomX = Math.floor(Math.random() * fieldWidth);
-        let randomY = Math.floor(Math.random() * fieldHeight);
-        this.findCell(randomX, randomY, 'red');
+        this.foodUnit.x = Math.floor(Math.random() * fieldWidth);
+        this.foodUnit.y = Math.floor(Math.random() * fieldHeight);
+        this.findCell(this.foodUnit.x, this.foodUnit.y, 'red');
     }
 
 }

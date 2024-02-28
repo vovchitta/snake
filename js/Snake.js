@@ -3,7 +3,7 @@ class Snake {
         this.findCell = findCell;
         this.snakeUnit = [
             {x: 3, y: 5},
-            {x: 2, y: 5},
+            {x: 2, y: 5}
         ];
         this.direction = direction;
     }
@@ -22,8 +22,8 @@ class Snake {
 
         this.snakeUnit.unshift(snakeHead);
         this.findCell(snakeHead.x, snakeHead.y, 'yellow');
-        }
-    
+}
+
 }
 
 export default Snake;
