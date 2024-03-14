@@ -1,9 +1,10 @@
 class Field {
 
-    constructor(x, y, field) {
+    constructor(x, y, field, findCell) {
         this.x = x;
         this.y = y;
         this.field = field;
+        this.findCell = findCell;
     }
 
     createCell(x, y) {
@@ -15,11 +16,26 @@ class Field {
     }
 
     createField() {
-        for(let i = 0; i < 10; i++) {
-        for(let j = 0; j < 10; j++) {
+        for(let i = 0; i < 12; i++) {
+        for(let j = 0; j < 12; j++) {
         this.createCell(i, j);
         }
     }
+}
+
+    border(color) {
+        for (let i = 0; i < 12; i++) {
+            this.findCell(i, 0, `${color}`, 'none');
+    };
+        for (let i = 0; i < 12; i++) {
+            this.findCell(0, i, `${color}`, 'none');
+    };
+        for (let i = 0; i < 12; i++) {
+            this.findCell(i, 11, `${color}`, 'none');
+};
+        for (let i = 0; i < 12; i++) {
+            this.findCell(11, i, `${color}`, 'none');
+};
 }
 
 }

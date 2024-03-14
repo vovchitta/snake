@@ -24,7 +24,7 @@ body {
 }
 
 .main__score_new,
-.main__score_previous {
+.main__score_best {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
@@ -32,8 +32,8 @@ body {
 
 .main__field {
     display: grid;
-    grid-template-columns: repeat(10, 50px);
-    grid-template-rows: repeat(10, 50px);
+    grid-template-columns: repeat(12, 50px);
+    grid-template-rows: repeat(12, 50px);
 }
 
 
@@ -42,4 +42,38 @@ body {
     height: 50px;
     border: 1px solid #313131;
     background-color: #fff;
+}
+
+.main__start_window {
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: black;
+    display: none;
+    opacity: 0.7;
+}
+
+.start_btn {
+    width: 20vw;
+    height: 5vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(112, 0, 0);
+    color: rgb(2, 255, 2);
+    font-size: 40px;
+    cursor: pointer;
+}
+
+.lost {
+    height: 10vw;
+    width: 32vw;
+    font-size: 100px;
+    text-align: center;
+    color: red;
 }

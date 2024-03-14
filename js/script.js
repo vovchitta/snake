@@ -2,64 +2,85 @@ import Field from "./Field.js";
 import Food from "./Food.js";
 import Snake from "./Snake.js";
 
-const field = document.querySelector('.main__field');	
+const field = document.querySelector('.main__field');
 let direction = 'right';
+let bestScoreUnit = document.querySelector('.main__score_best');
+let bestScore = localStorage.getItem('yourBestScore');
+let startGame;
 
-const creator = new Field(0, 0, field);
+const creator = new Field(0, 0, field, findCell);
 const food = new Food(findCell);
-const snake = new Snake(findCell, direction);
 
 creator.createField();
+creator.border('grey');
 
-const cell = document.querySelector('.cell');
+food.draw();
 
-function findCell (a, b, color) {
+let foodCoordX = food.foodUnit.x;
+let foodCoordY = food.foodUnit.y;
+
+function updateScoreAndCheckBest() {
+    if (snake.score > bestScore) {
+        bestScore = snake.score;
+        localStorage.setItem('yourBestScore', bestScore);
+    }
+}
+
+function newGame () { window.addEventListener('click', ()=> {
+startGame = setInterval(() => {
+	snake.move();
+	updateScoreAndCheckBest();
+	if (snake.score > bestScore) {
+		bestScoreUnit.textContent = 'Your best score:' + bestScore;
+	}
+    }, 200);
+})
+};
+
+newGame();
+
+	function endGame() {
+		clearInterval(startGame);
+		let endGameWindow = document.querySelector('.main__start_window');
+		endGameWindow.style.display = 'flex';
+        let scoreEndGame = document.querySelector('.main__score_new');
+        let bestScoreEndGame = document.querySelector('.main__score_best');
+        scoreEndGame.style.fontSize = '60px';
+        bestScoreEndGame.style.fontSize = '60px';
+        let resetGame = document.querySelector('.start_btn');
+        resetGame.addEventListener('click', ()=> {
+            location.reload();
+        });
+        if (bestScore > 0) {
+            bestScoreUnit.textContent = 'Your best score: ' + bestScore;
+        }
+	}
+
+const snake = new Snake(findCell, direction, foodCoordX, foodCoordY, endGame);
+
+function findCell (a, b, color, border) {
     let xCoord = a;
     let yCoord = b;
     const thisCell = document.querySelector(`.cell[data-x="${xCoord}"][data-y="${yCoord}"]`);
     thisCell.style.backgroundColor = `${color}`;
+    thisCell.style.border = `${border}`;
 }
 
 document.addEventListener("keydown", onMove);
 
 function onMove(event) {
-	if(event.keyCode == 37 && direction != "right")
-		direction = "left";
-	else if(event.keyCode == 38 && direction != "down")
-		direction = "up";
-	else if(event.keyCode == 39 && direction != "left")
-		direction = "right";
-	else if(event.keyCode == 40 && direction != "up")
-		direction = "down";
-	snake.direction = direction;
+    if(event.keyCode == 37 && direction != "right")
+        direction = "left";
+    else if(event.keyCode == 38 && direction != "down")
+        direction = "up";
+    else if(event.keyCode == 39 && direction != "left")
+        direction = "right";
+    else if(event.keyCode == 40 && direction != "up")
+        direction = "down";
+    snake.direction = direction;
 }
 
-function checkDeath () {
-	if (snake.snakeUnit[0].x < 0 ||
-		snake.snakeUnit[0].x > 9 ||
-		snake.snakeUnit[0].y < 0 ||
-		snake.snakeUnit[0].y > 9) {
-			return true;
+	if (bestScore > 0) {
+		bestScoreUnit.textContent = 'Your best score: ' + bestScore;
 	}
 
-	for (let i = 1; i < snake.snakeUnit.length; i++) {
-		if (snake.snakeUnit[0].x === snake.snakeUnit[i].x && snake.snakeUnit[0].y === snake.snakeUnit[i].y) {
-			return true;
-	}
-}
-	return false;
-}
-
-food.draw();
-
-setInterval(() => snake.move(), 1000);
-
-if (snake.snakeUnit[0].x === food.foodUnit.x && snake.snakeUnit[0].y === food.foodUnit.y) {
-	food.draw();
-} else {
-	snake.snakeUnit.pop();
-}
-
-if(checkDeath()) {
-	console.log('You lost!');
-}
